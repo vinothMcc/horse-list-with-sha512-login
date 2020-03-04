@@ -31,4 +31,9 @@ export class HorseListService {
   public get horseListValue() {
     return this.horseList$.value;
   }
+
+  //  PATCH method is not supported for this route. Supported methods: GET, HEAD, POST.
+  deleteHorseData(id) {
+    return this._http.delete(`${this._config.BASE_URL}/horses`, id);
+  }
 }

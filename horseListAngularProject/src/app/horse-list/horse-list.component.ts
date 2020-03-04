@@ -9,6 +9,7 @@ import {
 import { MatTableDataSource } from '@angular/material';
 import { AddEditRowComponent } from '../add-edit-row/add-edit-row.component';
 import { map } from 'rxjs/operators';
+import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
 @Component({
   selector: 'app-horse-list',
   templateUrl: './horse-list.component.html',
@@ -20,7 +21,9 @@ export class HorseListComponent implements OnInit {
     public dialog: MatDialog
   ) {
     this._horseService.horseList$.subscribe(res => {
-      if (res != null) { this.dataSource = new MatTableDataSource(res); }
+      if (res != null) {
+        this.dataSource = new MatTableDataSource(res);
+      }
     });
   }
   displayedColumns: string[] = [
@@ -43,7 +46,7 @@ export class HorseListComponent implements OnInit {
       });
   }
 
-  addEditRow(id) {
+  addEditRow(id: string) {
     const data = {
       id,
       type: 'Add'
@@ -54,6 +57,22 @@ export class HorseListComponent implements OnInit {
     const dialogRef = this.dialog.open(AddEditRowComponent, {
       width: '500px',
       data
+    });
+  }
+  deleteRow(id: string) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: 'Do you confirm the deletion of this data?'
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this._horseService.deleteHorseData(id).subscribe(res => {
+          const listData = this._horseService.horseListValue.filter(
+            data => data.id === res.id
+          );
+          this._horseService.horseList$.next(listData);
+        });
+      }
     });
   }
 }
