@@ -11,12 +11,12 @@ interface Color {
 }
 
 interface Horse {
-  horseName: string;
-  horseNumber: string;
-  ageVerified: boolean;
+  horse_name: string;
+  horse_number: string;
+  age_verified: boolean;
   dob: string;
   color: string;
-  ushjaRegistered: boolean;
+  ushja_registered: boolean;
 }
 
 @Component({
@@ -25,30 +25,24 @@ interface Horse {
   styleUrls: ['./add-edit-row.component.scss']
 })
 export class AddEditRowComponent implements OnInit {
-  addEditForm: FormGroup;
-  formData: Horse;
-  colors: Color[] = [
-    { value: 'red', viewValue: 'red' },
-    { value: 'blue', viewValue: 'blue' },
-    { value: 'green', viewValue: 'green' }
-  ];
-  operation: string;
   constructor(
     private _fb: FormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private _horseService: HorseListService,
     public dialogRef: MatDialog
   ) {}
-
+  addEditForm: FormGroup;
+  colors: Color[] = [
+    { value: 'brown', viewValue: 'brown' },
+    { value: 'white', viewValue: 'white' },
+    { value: 'gray', viewValue: 'gray' }
+  ];
+  operation: string;
+  get;
   ngOnInit() {
-    this.formData = {
-      horseName: '',
-      horseNumber: '',
-      ageVerified: false,
-      dob: '',
-      color: '',
-      ushjaRegistered: false
-    };
+    console.log(this.data.id);
+    this.operation = this.data.type;
+
     this.addEditForm = this._fb.group({
       horse_name: ['', Validators.required],
       horse_number: [''],
@@ -57,10 +51,29 @@ export class AddEditRowComponent implements OnInit {
       color: [''],
       ushja_registered: ['']
     });
-    this.operation = this.data.type;
-  }
-  get f() {
-    return this.addEditForm.controls;
+
+    if (this.data.id) {
+      this._horseService
+        .getHorseData(this.data.id)
+        .pipe(map(res => res.data))
+        .subscribe(horseData => {
+          console.log(horseData);
+
+          this.addEditForm.controls.horse_name.setValue(horseData.horse_name);
+
+          this.addEditForm.controls.horse_number.setValue(
+            horseData.horse_number
+          );
+          this.addEditForm.controls.age_verified.setValue(
+            horseData.age_verified === 1 ? true : false
+          );
+          this.addEditForm.controls.dob.setValue(horseData.dob);
+          this.addEditForm.controls.color.setValue(horseData.color);
+          this.addEditForm.controls.ushja_registered.setValue(
+            horseData.ushja_registered === 1 ? true : false
+          );
+        });
+    }
   }
 
   onSubmit() {
@@ -69,15 +82,30 @@ export class AddEditRowComponent implements OnInit {
         'YYYY-MM-DD'
       );
     }
-    this._horseService
-      .patchHorseData(this.addEditForm.value)
-      .pipe(map(res => res.data))
-      .subscribe(patchData => {
-        console.log(this._horseService.horseListValue);
-        const listData: [] = this._horseService.horseListValue;
-        listData.push(patchData);
-        this._horseService.horseList$.next(listData);
-      });
+    if (this.data.id) {
+      this.addEditForm.value.id = this.data.id;
+      this._horseService
+        .updateHorseData(this.addEditForm.value)
+        .pipe(map(res => res.data))
+        .subscribe(updateData => {
+          const listData: [] = this._horseService.horseListValue;
+          const index = listData.findIndex(data => data.id === updateData.id);
+          if (index > 0) {
+            listData[index] = updateData;
+            this._horseService.horseList$.next(listData);
+          }
+        });
+    } else {
+      this._horseService
+        .putHorseData(this.addEditForm.value)
+        .pipe(map(res => res.data))
+        .subscribe(patchData => {
+          console.log(this._horseService.horseListValue);
+          const listData: [] = this._horseService.horseListValue;
+          listData.push(patchData);
+          this._horseService.horseList$.next(listData);
+        });
+    }
   }
   dialogClose(): void {
     this.dialogRef.closeAll();
