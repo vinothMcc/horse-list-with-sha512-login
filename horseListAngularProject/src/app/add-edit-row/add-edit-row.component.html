@@ -2,12 +2,12 @@
 
 <form [formGroup]="addEditForm" id="addEditForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
-    <mat-form-field>
+    <mat-form-field class="d-block">
       <input matInput type="text" placeholder="Horse Name" formControlName="horse_name" />
     </mat-form-field>
   </div>
   <div class="form-group">
-    <mat-form-field>
+    <mat-form-field class="d-block">
       <input matInput type="text" formControlName="horse_number" placeholder="Horse Number" />
     </mat-form-field>
   </div>
@@ -20,7 +20,7 @@
     </mat-radio-group>
   </div>
   <div class="form-group">
-    <mat-form-field>
+    <mat-form-field class="d-block">
       <mat-label>Date of Birth</mat-label>
       <input matInput [matDatepicker]="picker" formControlName="dob" />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -28,7 +28,7 @@
     </mat-form-field>
   </div>
   <div class="form-group">
-    <mat-form-field>
+    <mat-form-field class="d-block">
       <mat-label>Select Color</mat-label>
       <mat-select formControlName="color">
         <mat-option *ngFor="let color of colors" [value]="color.value">

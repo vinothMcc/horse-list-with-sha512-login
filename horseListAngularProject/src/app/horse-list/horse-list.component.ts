@@ -68,12 +68,15 @@ export class HorseListComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this._horseService.deleteHorseData(id).subscribe(res => {
-          const listData = this._horseService.horseListValue.filter(
-            data => data.id === res.id
-          );
-          this._horseService.horseList$.next(listData);
-        });
+        this._horseService
+          .deleteHorseData(id)
+          .pipe(map(res => res.data))
+          .subscribe(res => {
+            const listData = this._horseService.horseListValue.filter(
+              data => data.id === res.id
+            );
+            this._horseService.horseList$.next(listData);
+          });
       }
     });
   }
