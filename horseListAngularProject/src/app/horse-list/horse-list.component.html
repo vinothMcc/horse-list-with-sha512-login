@@ -54,8 +54,8 @@
       <ng-container matColumnDef="action">
         <th mat-header-cell *matHeaderCellDef>Action</th>
         <td mat-cell *matCellDef="let element">
-          <mat-icon class="text-info mr-2" (click)="addEditRow(element.id)">edit</mat-icon>
-          <mat-icon class="text-danger" (click)="deleteRow(element.id)">delete</mat-icon>
+          <mat-icon class="btn text-info mr-2" (click)="addEditRow(element.id)">edit</mat-icon>
+          <mat-icon class="btn text-danger" (click)="deleteRow(element.id)">delete</mat-icon>
         </td>
       </ng-container>
 

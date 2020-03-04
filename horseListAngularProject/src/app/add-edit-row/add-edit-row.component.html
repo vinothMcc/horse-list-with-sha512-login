@@ -1,44 +1,22 @@
-<h1>{{ operation }} Row</h1>
+<h4>{{ operation }} Row</h4>
 
 <form [formGroup]="addEditForm" id="addEditForm" (ngSubmit)="onSubmit()">
   <div class="form-group">
     <mat-form-field>
-      <input
-        matInput
-        type="text"
-        placeholder="Horse Name"
-        formControlName="horse_name"
-      />
+      <input matInput type="text" placeholder="Horse Name" formControlName="horse_name" />
     </mat-form-field>
   </div>
   <div class="form-group">
     <mat-form-field>
-      <input
-        matInput
-        type="text"
-        formControlName="horse_number"
-        placeholder="Horse Number"
-      />
+      <input matInput type="text" formControlName="horse_number" placeholder="Horse Number" />
     </mat-form-field>
   </div>
   <div class="form-group">
     <label for="" class="pr-2">Age Verified</label>
-    <mat-radio-group
-      aria-labelledby="example-radio-group-label"
-      class="example-radio-group"
-    >
-      <input
-        type="radio"
-        class="example-radio-button pr-2"
-        [value]="true"
-        formControlName="age_verified"
-      />True
-      <input
-        type="radio"
-        class="example-radio-button pr-2"
-        [value]="false"
-        formControlName="age_verified"
-      />False
+    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group">
+      <input type="radio" class="example-radio-button pr-2 ml-2 mr-1" [value]="true"
+        formControlName="age_verified" />True
+      <input type="radio" class="example-radio-button pr-2 ml-2" [value]="false" formControlName="age_verified" />False
     </mat-radio-group>
   </div>
   <div class="form-group">
@@ -60,34 +38,18 @@
     </mat-form-field>
   </div>
   <div class="form-group">
-    <mat-radio-group
-      aria-labelledby="example-radio-group-label"
-      class="example-radio-group"
-    >
+    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group">
       <label for="" class="pr-2">Ushja Registered</label>
 
-      <input
-        type="radio"
-        class="example-radio-button pr-2"
-        [value]="true"
-        formControlName="ushja_registered"
-      />True
-      <input
-        type="radio"
-        class="example-radio-button pr-2"
-        [value]="false"
-        formControlName="ushja_registered"
-      />False
+      <input type="radio" class="example-radio-button pr-2 ml-2  mr-1" [value]="true"
+        formControlName="ushja_registered" />True
+      <input type="radio" class="example-radio-button pr-2 ml-2" [value]="false"
+        formControlName="ushja_registered" />False
     </mat-radio-group>
   </div>
   <div mat-dialog-actions>
     <button mat-raised-button (click)="dialogClose()">Cancel</button>
-    <button
-      type="submit"
-      [mat-dialog-close]=""
-      mat-raised-button
-      color="primary"
-    >
+    <button type="submit" [mat-dialog-close]="" mat-raised-button color="primary">
       {{ operation }}
     </button>
   </div>
