@@ -1,11 +1,16 @@
 <div class="card mt-4">
-  <h4 class="card-header">Horse List</h4>
+  <h4 class="card-header">Horse List
+    <button mat-raised-button color="warning" class="float-right mb-2" (click)="logout()">
+      Logout
+    </button>
+  </h4>
   <div class="card-body">
     <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
     <div class="d-block">
       <button mat-raised-button color="primary" class="float-right mb-2" (click)="addEditRow('')">
         Add Row
       </button>
+
     </div>
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 col" matSort>
       <!--- Note that these columns can be defined in any order.

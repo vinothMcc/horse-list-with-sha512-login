@@ -10,6 +10,7 @@ import { MatTableDataSource } from '@angular/material';
 import { AddEditRowComponent } from '../add-edit-row/add-edit-row.component';
 import { map } from 'rxjs/operators';
 import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.component';
+import { AuthServiceService } from '../service/auth-service.service';
 @Component({
   selector: 'app-horse-list',
   templateUrl: './horse-list.component.html',
@@ -18,7 +19,8 @@ import { ConfirmDialogComponent } from '../confirm-dialog/confirm-dialog.compone
 export class HorseListComponent implements OnInit {
   constructor(
     private _horseService: HorseListService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private _auth: AuthServiceService
   ) {
     this._horseService.horseList$.subscribe(res => {
       if (res != null) {
@@ -74,5 +76,8 @@ export class HorseListComponent implements OnInit {
         });
       }
     });
+  }
+  logout() {
+    this._auth.logout();
   }
 }
