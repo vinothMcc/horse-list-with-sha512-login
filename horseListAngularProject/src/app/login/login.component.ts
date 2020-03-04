@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { first } from 'rxjs/operators';
+
 import * as sha512 from 'js-sha512';
+
+import { AuthServiceService } from '../service/auth-service.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +22,8 @@ export class LoginComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private _auth: AuthServiceService
   ) {}
 
   ngOnInit() {
@@ -45,5 +50,17 @@ export class LoginComponent implements OnInit {
     }
     console.log('sha1 : ', sha512.sha512(this.f.password.value));
     this.loading = true;
+    this._auth
+      .login(this.f.username.value, sha512.sha512(this.f.password.value))
+      .pipe(first())
+      .subscribe(
+        data => {
+          this.router.navigate([this.returnUrl]);
+        },
+        error => {
+          this.error = error;
+          this.loading = false;
+        }
+      );
   }
 }
