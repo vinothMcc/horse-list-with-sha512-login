@@ -1,0 +1,111 @@
+<h1>{{ operation }} Row</h1>
+
+<form [formGroup]="addEditForm" id="addEditForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        placeholder="Horse Name"
+        formControlName="horse_name"
+      />
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <input
+        matInput
+        type="text"
+        formControlName="horse_number"
+        placeholder="Horse Number"
+      />
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <label for="" class="pr-2">Age Verified</label>
+    <mat-radio-group
+      aria-labelledby="example-radio-group-label"
+      class="example-radio-group"
+    >
+      <input
+        type="radio"
+        class="example-radio-button pr-2"
+        [value]="true"
+        formControlName="age_verified"
+      />True
+      <input
+        type="radio"
+        class="example-radio-button pr-2"
+        [value]="false"
+        formControlName="age_verified"
+      />False
+    </mat-radio-group>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label>Date of Birth</mat-label>
+      <input
+        matInput
+        [matDatepicker]="picker"
+        formControlName="dob"
+        [(ngModel)]="dobValue"
+        (click)="getDate()"
+      />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <mat-form-field>
+      <mat-label>Select Color</mat-label>
+      <mat-select formControlName="color">
+        <mat-option *ngFor="let color of colors" [value]="color.value">
+          {{ color.viewValue }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class="form-group">
+    <!-- <Label>Ushja Registered</Label>
+    <section class="example-section" formControlName="ushjaRegistered">
+      <mat-checkbox class="example-margin mr-2" [(ngModel)]="checked"
+        >True</mat-checkbox
+      >
+      <mat-checkbox class="example-margin" [(ngModel)]="indeterminate"
+        >False</mat-checkbox
+      >
+    </section> -->
+    <mat-radio-group
+      aria-labelledby="example-radio-group-label"
+      class="example-radio-group"
+    >
+      <label for="" class="pr-2">Ushja Registered</label>
+
+      <input
+        type="radio"
+        class="example-radio-button pr-2"
+        [value]="true"
+        formControlName="ushja_registered"
+      />True
+      <input
+        type="radio"
+        class="example-radio-button pr-2"
+        [value]="false"
+        formControlName="ushja_registered"
+      />False
+    </mat-radio-group>
+  </div>
+  <div mat-dialog-actions>
+    <button mat-raised-button (click)="dialogClose()">Cancel</button>
+    <button
+      type="submit"
+      [mat-dialog-close]=""
+      mat-raised-button
+      color="primary"
+    >
+      {{ operation }}
+    </button>
+  </div>
+</form>
+
+<!--  -->

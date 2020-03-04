@@ -24,7 +24,12 @@ export class LoginComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private _auth: AuthServiceService
-  ) {}
+  ) {
+    // redirect to home if already logged in
+    if (this._auth.currentUserValue) {
+      this.router.navigate(['/']);
+    }
+  }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
