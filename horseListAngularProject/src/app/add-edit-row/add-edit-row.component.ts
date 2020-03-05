@@ -1,9 +1,9 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material';
-import { HorseListService } from '../service/horse-list.service';
-import * as moment from 'moment';
-import { map } from 'rxjs/operators';
+import { Component, OnInit, Inject } from "@angular/core";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { MAT_DIALOG_DATA, MatDialog } from "@angular/material";
+import { HorseListService } from "../service/horse-list.service";
+import * as moment from "moment";
+import { map } from "rxjs/operators";
 
 interface Color {
   value: string;
@@ -20,9 +20,9 @@ interface Horse {
 }
 
 @Component({
-  selector: 'app-add-edit-row',
-  templateUrl: './add-edit-row.component.html',
-  styleUrls: ['./add-edit-row.component.scss']
+  selector: "app-add-edit-row",
+  templateUrl: "./add-edit-row.component.html",
+  styleUrls: ["./add-edit-row.component.scss"]
 })
 export class AddEditRowComponent implements OnInit {
   constructor(
@@ -33,9 +33,9 @@ export class AddEditRowComponent implements OnInit {
   ) {}
   addEditForm: FormGroup;
   colors: Color[] = [
-    { value: 'brown', viewValue: 'brown' },
-    { value: 'white', viewValue: 'white' },
-    { value: 'gray', viewValue: 'gray' }
+    { value: "brown", viewValue: "brown" },
+    { value: "white", viewValue: "white" },
+    { value: "gray", viewValue: "gray" }
   ];
   operation: string;
   get;
@@ -44,18 +44,18 @@ export class AddEditRowComponent implements OnInit {
     this.operation = this.data.type;
 
     this.addEditForm = this._fb.group({
-      horse_name: ['', Validators.required],
-      horse_number: [''],
-      age_verified: [''],
-      dob: [''],
-      color: [''],
-      ushja_registered: ['']
+      horse_name: ["", Validators.required],
+      horse_number: [""],
+      age_verified: [""],
+      dob: [""],
+      color: [""],
+      ushja_registered: [""]
     });
 
     if (this.data.id) {
       this._horseService
         .getHorseData(this.data.id)
-        .pipe(map(res => res.data))
+        .pipe(map((res: any) => res.data))
         .subscribe(horseData => {
           console.log(horseData);
 
@@ -79,17 +79,19 @@ export class AddEditRowComponent implements OnInit {
   onSubmit() {
     if (this.addEditForm.value.dob) {
       this.addEditForm.value.dob = moment(this.addEditForm.value.dob._d).format(
-        'YYYY-MM-DD'
+        "YYYY-MM-DD"
       );
     }
     if (this.data.id) {
       this.addEditForm.value.id = this.data.id;
       this._horseService
         .updateHorseData(this.addEditForm.value)
-        .pipe(map(res => res.data))
+        .pipe(map((res: any) => res.data))
         .subscribe(updateData => {
-          const listData: [] = this._horseService.horseListValue;
-          const index = listData.findIndex(data => data.id === updateData.id);
+          const listData: any = this._horseService.horseListValue;
+          const index = listData.findIndex(
+            (data: any) => data.id === updateData.id
+          );
           if (index > 0) {
             listData[index] = updateData;
             this._horseService.horseList$.next(listData);
@@ -98,10 +100,9 @@ export class AddEditRowComponent implements OnInit {
     } else {
       this._horseService
         .putHorseData(this.addEditForm.value)
-        .pipe(map(res => res.data))
+        .pipe(map((res: any) => res.data))
         .subscribe(patchData => {
-          console.log(this._horseService.horseListValue);
-          const listData: [] = this._horseService.horseListValue;
+          const listData = this._horseService.horseListValue;
           listData.push(patchData);
           this._horseService.horseList$.next(listData);
         });
